@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spam Email Detection</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+         
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #141e30, #243b55);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 420px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            color: white;
+        }
+         .cursor {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #00c6ff;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+         .cursor-trail {
+            position: fixed;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid #00c6ff;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9998;
+        }
+        h2 {
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            resize: none;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        textarea::placeholder {
+            color: #aaa;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: #00c6ff;
+            background: linear-gradient(to right, #0072ff, #00c6ff);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 198, 255, 0.5);
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .spam {
+            color: #ff4d4d;
+        }
+
+        .notspam {
+            color: #00ffae;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="cursor"></div>
+<div class="cursor-trail"></div>
+
+<div class="card">
+    <h2>📧 Spam Email Detector</h2>
+
+    <textarea id="emailText" placeholder="Type or paste your email here..."></textarea>
+
+    <button onclick="checkSpam()">Check Message</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+function checkSpam() {
+    let text = document.getElementById("emailText").value;
+
+    fetch("/predict", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ text: text })
+    })
+    .then(res => res.json())
+    .then(data => {
+        let resultDiv = document.getElementById("result");
+
+        if (data.prediction === 1) {
+            resultDiv.innerHTML = "⚠️ Spam Email";
+            resultDiv.className = "spam";
+        } else {
+            resultDiv.innerHTML = "✅ Not Spam";
+            resultDiv.className = "notspam";
+        }
+    });
+    const cursor = document.querySelector(".cursor");
+    const trail = document.querySelector(".cursor-trail");
+
+    document.addEventListener("mousemove", (e) => {
+    let x = e.clientX;
+    let y = e.clientY;
+
+    cursor.style.left = x + "px";
+    cursor.style.top = y + "px";
+
+    setTimeout(() => {
+        trail.style.left = x + "px";
+        trail.style.top = y + "px";
+    }, 50);
+});
+}
+</script>
+
+</body>
+</html>
