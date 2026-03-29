@@ -29,27 +29,7 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
             color: white;
         }
-         .cursor {
-            position: fixed;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background: #00c6ff;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-        }
-
-         .cursor-trail {
-            position: fixed;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            border: 2px solid #00c6ff;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 9998;
-        }
+         
         h2 {
             margin-bottom: 20px;
             font-weight: 600;
@@ -105,11 +85,7 @@
     </style>
 </head>
 
-<body>
-
-<div class="cursor"></div>
-<div class="cursor-trail"></div>
-
+<body> 
 <div class="card">
     <h2>📧 Spam Email Detector</h2>
 
@@ -143,21 +119,7 @@ function checkSpam() {
             resultDiv.className = "notspam";
         }
     });
-    const cursor = document.querySelector(".cursor");
-    const trail = document.querySelector(".cursor-trail");
-
-    document.addEventListener("mousemove", (e) => {
-    let x = e.clientX;
-    let y = e.clientY;
-
-    cursor.style.left = x + "px";
-    cursor.style.top = y + "px";
-
-    setTimeout(() => {
-        trail.style.left = x + "px";
-        trail.style.top = y + "px";
-    }, 50);
-});
+    
 }
 </script>
 
