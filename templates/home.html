@@ -106,7 +106,7 @@ function checkSpam() {
 if (text.trim() === "") {
     let resultDiv = document.getElementById("result");
     resultDiv.innerHTML = "⚠️ Please enter email text";
-    resultDiv.style.color = "orange";
+
     return;
 }
     fetch("/predict", {
