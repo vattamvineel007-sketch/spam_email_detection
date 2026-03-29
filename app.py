@@ -15,6 +15,10 @@ def home():
 def predict():
     data = request.get_json()
     text = data["text"]
+    text = data.get("text", "")
+
+    if text.strip() == "":
+        return jsonify({"prediction": -1})
 
     # 🔥 SAME CLEANING
     text = text.replace("Subject:", "")
